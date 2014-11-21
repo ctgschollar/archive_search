@@ -85,9 +85,13 @@ AjaxSolr.ResultWidget = AjaxSolr.AbstractWidget.extend({
 		    result = data;
 		     stat = status;
 //		     alert(JSON.stringify(result));
-		     link = "http://kat-archive.kat.ac.za:8983/fmprod/data?productID=" + result["response"]["docs"][0]["id"] + "&format=application/x-zip";
-		     $("#files"+doc['ExperimentID']).append("<b> Reduction Products</b> : <a href = " + link + "> Download Zip </a> <br>");
-		     }, "json");
+		     if (result["response"]["docs"].length > 0)
+		    	 $("#files"+doc['ExperimentID']).append("<b><u> Reductions </u></b><br> ");
+		     
+		     for  (var i = 0; i < result["response"]["docs"].length; i++){
+		     link = "http://kat-archive.kat.ac.za:8983/fmprod/data?productID=" + result["response"]["docs"][i]["id"] + "&format=application/x-zip";
+		     $("#files"+doc['ExperimentID']).append("<b> "+ result["response"]["docs"][i]["ReductionName"] +"</b> : <a href = " + link + "> Download Zip </a> <br>");
+		     }}, "json");
 	  
 	  
 	var link = "http://kat-archive.kat.ac.za:8983/fmprod/data?productID=" + doc.id;
@@ -95,9 +99,9 @@ AjaxSolr.ResultWidget = AjaxSolr.AbstractWidget.extend({
     var snippet = '';
     if (doc.Details != undefined) {
 		snippet += "<b>Observer</b> : " + doc['Observer'] + "<br>";
-	    snippet += "<b>Experiment ID</b> : " + doc['ExperimentID'];
-	    snippet += "<div id= 'files"+doc['ExperimentID']+"'> <b> File Name </b> : <a href = " + link + " >" + doc.Filename + "</a> (" + filesize.toFixed(2) + " GB) <br></div>";
-	    snippet += "<b>Product ID</b> : " + doc.id + "<br>";
+	    snippet += "<b>Experiment ID</b> : " + doc['ExperimentID'] + "<br>";
+	    snippet += "<b>Start Time</b> : " + doc['StartTime'] + "<br>";
+	    snippet += "<div id= 'files"+doc['ExperimentID']+"'> <b> Observation Data </b> : <a href = " + link + " >" + doc.Filename + "</a> (" + filesize.toFixed(2) + " GB) <br></div>";
 		snippet +=  "<pre>" +
 		"<div class='collapsible'>" +
 		"<h3>Details</h3>" +
@@ -107,9 +111,10 @@ AjaxSolr.ResultWidget = AjaxSolr.AbstractWidget.extend({
     }
     else {
     	snippet += "<b>Observer</b> : " + doc.Observer + "<br>";
-        snippet += "<b>Experiment ID</b> : " + doc.ExperimentID;
-        snippet += "<div id= 'files"+doc['ExperimentID']+"' <b> File Name </b> : <a href = " + link + " >" + doc.Filename + "</a> (" + filesize.toFixed(2) + " GB) <br></div>";
-        snippet += "<b>Product ID</b> : " + doc.id + "<br>";
+        snippet += "<b>Experiment ID</b> : " + doc.ExperimentID + "<br>";
+        snippet += "<b>Start Time</b> : " + doc['StartTime'] + "<br>";
+        snippet += "<div id= 'files"+doc['ExperimentID']+"' <b> Observation Data </b> : <a href = " + link + " >" + doc.Filename + "</a> (" + filesize.toFixed(2) + " GB) <br></div>";
+        
     }
      output += '<p id="links_' + doc.ProductId + '" class="links"></p>';
 //     output += doc["CAS.ProductTypeName"];
