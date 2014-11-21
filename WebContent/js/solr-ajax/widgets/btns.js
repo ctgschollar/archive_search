@@ -4,7 +4,7 @@ $(function() {
 	
 	$( "#btnSearch" ).click(function( event ) {
 		console.log($( '#inpSearch' ).val());
-		Manager.store.addByValue('q',$( '#inpSearch' ).val());
+		Manager.store.addByValue('q','(CAS.ProductTypeName:KatFile OR CAS.ProductTypeName:RTSTelescopeProduct) AND ' + $( '#inpSearch' ).val());
 		Manager.doRequest();
 	});
 });
