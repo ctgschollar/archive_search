@@ -58,13 +58,38 @@ AjaxSolr.ResultWidget = AjaxSolr.AbstractWidget.extend({
 
   template: function (doc) {
 	  
+//	  var options;
+//	  var response;
+//	  var query = "ExperimentID:20140718-0001";
+//	  opts = {dataType: 'json'};
+//	  if (this.proxyUrl) {
+//	      options.url = this.proxyUrl;
+//	      options.data = {query: string};
+//	      options.type = 'POST';
+//	    }
+//	    else {
+//	      options.url = this.solrUrl + servlet + '?' + string + '&wt=json&json.wrf=?';
+//	    }
+//	  errorler = errorHandler || function (jqXHR, textStatus, errorThrown) {
+//	      Manager.handleError(textStatus + ', ' + errorThrown);
+//	    };
+//	   ler = function (data) {
+//		    response = data;};
+//	   jQuery.ajax(opts).done(ler).fail(errorler);
+	  var output = '<div class="result"><h2>' + doc.Description + '</h2>';
+	  
+	  var result = "No Change";
+	  var stat = "NOTHIN";
+	  var paused = true;
+	  
+	  
 	var link = "http://kat-archive.kat.ac.za:8983/fmprod/data?productID=" + doc.id;
 	var filesize = parseFloat(doc.FileSize) / 1073741824;
     var snippet = '';
     if (doc.Details != undefined) {
-		snippet += "<b>Observer</b> : " + doc.Observer + "<br>";
-	    snippet += "<b>Experiment ID</b> : " + doc.ExperimentID + "<br>";
-	    snippet += "<b>File Name </b> : <a href = " + link + " >" + doc.Filename + "</a> (" + filesize.toFixed(2) + " GB) <br>";
+		snippet += "<b>Observer</b> : " + doc['Observer'] + "<br>";
+	    snippet += "<b>Experiment ID</b> : " + doc['ExperimentID'] + "<br>";
+	    snippet += "<b> <div id = 'files" + doc['ExperimentID'] + "'>File Name </b> : <a href = " + link + " >" + doc.Filename + "</a> (" + filesize.toFixed(2) + " GB) </div> <br>";
 	    snippet += "<b>Product ID</b> : " + doc.id + "<br>";
 		snippet +=  "<pre>" +
 		"<div class='collapsible'>" +
@@ -76,13 +101,23 @@ AjaxSolr.ResultWidget = AjaxSolr.AbstractWidget.extend({
     else {
     	snippet += "<b>Observer</b> : " + doc.Observer + "<br>";
         snippet += "<b>Experiment ID</b> : " + doc.ExperimentID + "<br>";
-        snippet += "<b>File Name </b> : <a href = " + link + " >" + doc.Filename + "</a> (" + filesize.toFixed(2) + " GB) <br>";
+        snippet += "<b> <div id = 'files" + doc['ExperimentID'] + "'>File Name </b> : <a href = " + link + " >" + doc.Filename + "</a> (" + filesize.toFixed(2) + " GB) </div> <br>";
         snippet += "<b>Product ID</b> : " + doc.id + "<br>";
     }
 
-     var output = '<div class="result"><h2>' + doc.Description + '</h2>';
+    
+     output +=  " Yoho" + JSON.stringify(result) + JSON.stringify(stat);
      output += '<p id="links_' + doc.ProductId + '" class="links"></p>';
      output += '<p>' + snippet + '</p><hr></div>';
+     
+//     alert("POSTING");
+	  jQuery.ajax('http://kat-archive.kat.ac.za:8983/solr/collection1/select?q=ExperimentID:20140718-0001&CAS.ProductTypeName:RTSTelescopeProduct&wt=json&json.wrf=?', {}, function(data,status){
+		    result = data;
+		     stat = status;
+		     alert(status);
+		     $("files"+doc['ExperimentID']).html(JSON.stringify(result));
+		     });
+	  
     return output;
   }
 });

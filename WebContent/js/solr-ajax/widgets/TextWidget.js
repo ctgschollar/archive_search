@@ -8,7 +8,7 @@ AjaxSolr.TextWidget = AjaxSolr.AbstractTextWidget.extend({
 		  var self = this;
 		  $(this.target).find('input').bind('keydown', function(e) {
 		    if (e.which == 13) {
-		      var value = $(this).val();
+		      var value = '(CAS.ProductTypeName:KatFile OR CAS.ProductTypeName:RTSTelescopeProduct) AND ' + $(this).val();
 		      if (value && self.set(value)) {
 		        self.doRequest();
 		      }

@@ -38,13 +38,12 @@ var Manager;
     
     //must call init after adding widgets
     Manager.init();
-    
+        
     //Create query
-    Manager.store.addByValue('q', '*:*');
+    Manager.store.addByValue('q', 'CAS.ProductTypeName:KatFile OR CAS.ProductTypeName:RTSTelescopeProduct');
     //execute query
     Manager.doRequest();
     //result in Manager.response
-    console.log(Manager.response);
-  });
+    });
   
 })(jQuery);
