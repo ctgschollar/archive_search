@@ -41,6 +41,7 @@ var Manager;
         
     //Create query
     Manager.store.addByValue('q', 'CAS.ProductTypeName:KatFile OR CAS.ProductTypeName:RTSTelescopeProduct');
+    Manager.store.addByValue('sort', 'StartTime desc');
     //execute query
     Manager.doRequest();
     //result in Manager.response

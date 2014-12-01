@@ -97,24 +97,18 @@ AjaxSolr.ResultWidget = AjaxSolr.AbstractWidget.extend({
 	var link = "http://kat-archive.kat.ac.za:8983/fmprod/data?productID=" + doc.id;
 	var filesize = parseFloat(doc.FileSize) / 1073741824;
     var snippet = '';
+    var date = moment(doc['StartTime']);
+    snippet += "<b>Observer</b> : " + doc['Observer'] + "<br>";
+    snippet += "<b>Experiment ID</b> : " + doc['ExperimentID'] + "<br>";
+    snippet += "<b>Start Time</b> : " + date.format('YYYY-MM-DD HH:mm:ss') + "<br>";
+    snippet += "<div id= 'files"+doc['ExperimentID']+"'> <b> Observation Data </b> : <a href = " + link + " >" + doc.Filename + "</a> (" + filesize.toFixed(2) + " GB) <br></div>";
     if (doc.Details != undefined) {
-		snippet += "<b>Observer</b> : " + doc['Observer'] + "<br>";
-	    snippet += "<b>Experiment ID</b> : " + doc['ExperimentID'] + "<br>";
-	    snippet += "<b>Start Time</b> : " + doc['StartTime'] + "<br>";
-	    snippet += "<div id= 'files"+doc['ExperimentID']+"'> <b> Observation Data </b> : <a href = " + link + " >" + doc.Filename + "</a> (" + filesize.toFixed(2) + " GB) <br></div>";
 		snippet +=  "<pre>" +
 		"<div class='collapsible'>" +
 		"<h3>Details</h3>" +
 		"<div class='details'><p>" + doc.Details + "</p></div>" +
 		"</div>" +
 		"</pre>";
-    }
-    else {
-    	snippet += "<b>Observer</b> : " + doc.Observer + "<br>";
-        snippet += "<b>Experiment ID</b> : " + doc.ExperimentID + "<br>";
-        snippet += "<b>Start Time</b> : " + doc['StartTime'] + "<br>";
-        snippet += "<div id= 'files"+doc['ExperimentID']+"' <b> Observation Data </b> : <a href = " + link + " >" + doc.Filename + "</a> (" + filesize.toFixed(2) + " GB) <br></div>";
-        
     }
      output += '<p id="links_' + doc.ProductId + '" class="links"></p>';
 //     output += doc["CAS.ProductTypeName"];

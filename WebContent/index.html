@@ -20,6 +20,7 @@
 		<script src="/Archive_Browser/js/solr-ajax/widgets/TextWidget.js" type="text/javascript"></script>
 		<script src="/Archive_Browser/js/reuters.js" type="text/javascript"></script>
 		<script src="/Archive_Browser/js/solr-ajax/widgets/btns.js" type="text/javascript"></script>
+		<script type="text/javascript" src="/Archive_Browser/js/moment.min.js"></script>
 		<title>ARCHIVE BROWSER</title>
 	</head>
 	<body id="body">
@@ -37,7 +38,34 @@
 							<div style="line-height:150%;">
 							    <br>
 							</div>
-							<button type="button" id="btnSearch">Search</button> 
+							<button type="button" id="btnSearch">Search</button>
+							<button type="button" id="btnSearchOptions">Search Options</button>
+							<div class='collapsible' id="searchOptions">
+								<br>
+								<div class='options'>
+									<table>
+										<tr>
+											<H3><u>Date Range</u></H3>
+										</tr>
+										<tr>
+											<td>
+												From:
+											</td>
+											<td>
+												<input type="text" id="dpFrom">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												To:
+											</td>
+											<td>
+												<input type="text" id="dpTo">
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div> 
 						</div>
 					</td>
 				</tr>
