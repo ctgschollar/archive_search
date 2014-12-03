@@ -1,4 +1,8 @@
 .pager li { display: inline; }
 .collapsible{
-	width: 100%
+	width: 100%;
+}
+
+.ui-accordion .ui-accordion-content {
+    border:none;
 }
