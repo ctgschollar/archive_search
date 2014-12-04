@@ -62,9 +62,6 @@
 
 				template : function(doc) {
 
-					var output = '<div class="result"><h2>' + doc.Description
-							+ '</h2>';
-
 					var result = "No Change";
 					var stat = "NOTHIN";
 					$
@@ -93,17 +90,24 @@
 //															+ doc['ExperimentID']
 //															+ "'> <br>"
 //															+ "<div class='details'><p>");
+										var sort_array = Array();
 										for (var i = 0; i < result["response"]["docs"].length; i++){
-											
+											sort_array[i] = [result["response"]["docs"][i]["ReductionName"],i];
 										}
+										sorted = sort_array.sort(function(x,y){
+											var xp = x[0];
+											var yp = y[0];
+											return xp == yp ? 0 : xp < yp ? -1 : 1;
+										});
 
 										for (var i = 0; i < result["response"]["docs"].length; i++) {
+											index = sorted[i][1];
 											link = "http://kat-archive.kat.ac.za:8983/fmprod/data?productID="
-													+ result["response"]["docs"][i]["id"]
+													+ result["response"]["docs"][index]["id"]
 													+ "&format=application/x-zip";
 											append += "<table width = 100% ><tr><td>"
 												+ "<b> "
-												+ result["response"]["docs"][i]["ReductionName"]
+												+ result["response"]["docs"][index]["ReductionName"]
 												+ "</b> : </td><td><a href = "
 												+ link
 												+ "><button type='button' style='float:right;'> Download Zip </button></a>";
@@ -115,7 +119,7 @@
 //																	+ "</b> : <a href = "
 //																	+ link
 //																	+ "> Download Zip </a>");
-											files = result["response"]["docs"][i]["CAS.ReferenceDatastore"];
+											files = result["response"]["docs"][index]["CAS.ReferenceDatastore"].sort();
 											fileshtml = "";
 
 											for (var j = 0; j < files.length; j++) {
@@ -134,11 +138,11 @@
 											}
 											append +="<button type='button' style='float:right;' class='seeFiles' id='btnSeeFiles"
 												+ doc['ExperimentID']
-											+ i
-											+ "'>Show file list</button></td></tr></table>"
+											+ index
+											+ "'>Show Files</button></td></tr></table>"
 											+ "<div class='collapsible' id='collapseSeeFiles"
 											+ doc['ExperimentID']
-											+ i
+											+ index
 											+ "'> <br>"
 											+ "<div class='details'>"
 											+ fileshtml
@@ -148,7 +152,7 @@
 											
 										}
 										$("#files" + doc['ExperimentID']).append(append);
-										console.log(append + "</div></div>");
+										
 										
 										$("button").button();
 										$(".seeReductions")
@@ -159,22 +163,21 @@
 																	.substring(
 																			3,
 																			this.id.length);
-													console
-															.log(collapsibleid);
 													if ($(collapsibleid)
-															.hasClass(
-																	"opened")) {
+															.hasClass("opened")) {
 														$(collapsibleid)
 																.accordion(
 																		"option",
 																		"active",
 																		false);
+														$(this).button("option", "label", "Show Reductions");
 													} else {
 														$(collapsibleid)
 																.accordion(
 																		"option",
 																		"active",
 																		0);
+														$(this).button("option", "label", "Hide Reductions");
 													}
 
 												});
@@ -196,12 +199,14 @@
 																				"option",
 																				"active",
 																				false);
+																$(this).button("option", "label", "Show Files");
 															} else {
 																$(collapsibleid)
 																		.accordion(
 																				"option",
 																				"active",
 																				0);
+																$(this).button("option", "label", "Hide Files");
 															}
 
 														});
@@ -212,23 +217,30 @@
 					var filesize = parseFloat(doc.FileSize) / 1073741824;
 					var snippet = '';
 					var date = moment(doc['StartTime']);
-					snippet += "<b>Observer</b> : " + doc['Observer'] + "<br>";
-					snippet += "<b>Experiment ID</b> : " + doc['ExperimentID']
-							+ "<br>";
-					snippet += "<b>Start Time</b> : "
-							+ date.format('YYYY-MM-DD HH:mm:ss') + "<br>";
-					snippet += "<div id= 'files" + doc['ExperimentID']
-							+ "'> <b> Observation Data </b> : <a href = "
+					snippet += "<table><tr><td width = 200px><b>Observer</b> :</td><td>" + doc['Observer'] + "</td></tr>"
+							+ "<tr><td><b>Experiment ID</b> :</td><td> " + doc['ExperimentID']
+							+ "</td></tr>"
+					 		+ "<tr><td><b>Start Time</b> :</td><td> "
+							+ date.format('YYYY-MM-DD HH:mm:ss') + "</td></tr>";
+					if (doc["Targets"]){
+							snippet += "<tr><td><b> Target/s</b> :</td><td> " + doc["Targets"][0] + "</td></tr>";
+						for (var i = 1; i < doc["Targets"].length; i++){
+							snippet += "<tr><td></td><td>" + doc["Targets"][i] + "</td></tr>";
+						}
+					}
+							snippet += " <tr><td><b> Observation Data </b> :</td><td> <a href = "
 							+ link + " >" + doc.Filename + "</a> ("
-							+ filesize.toFixed(2) + " GB) <br></div>";
+							+ filesize.toFixed(2) + " GB) </td></tr></table><br></div>";
+							
 					if (doc.Details != undefined) {
 						snippet += "<pre>" + "<div class='collapsible'>"
 								+ "<h3>Details</h3>"
 								+ "<div class='details'><p>" + doc.Details
 								+ "</p></div>" + "</div>" + "</pre>";
 					}
-					output += '<p id="links_' + doc.ProductId
-							+ '" class="links"></p>';
+					var output = "<div class='result'><div id= 'files" + doc['ExperimentID']
+					+ "'><h2>" + doc.Description
+					+ '</h2>';
 					// output += doc["CAS.ProductTypeName"];
 					output += '<p>' + snippet + '</p><hr></div>';
 

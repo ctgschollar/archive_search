@@ -2,24 +2,38 @@
 $(function() {
 	$( "button" ).button();
 	
+	$( "#searchOptions" ).accordion({
+		collapsible: true,
+		active: false,
+		heightStyle:"content",
+		activate: function(event, ui) {
+			if ( $( this ).hasClass("opened") ){
+				$( this ).removeClass("opened");
+			} else {
+	        	$( this ).addClass("opened");
+	        }}
+		});
+	
 	$( "#btnSearch" ).click(function( event ) {
 		console.log($( '#inpSearch' ).val());
-		search();
+		search(true);
 		
 	});
 	
 	$( "#inpSearch" ).keyup(function(e){
 	    if(e.keyCode == 13)
 	    {
-	    	search();
+	    	search(true);
 	    }});
 	
 	$( "#btnSearchOptions").click(function (event){
 		if ( $( "#searchOptions").hasClass("opened") ){
 			$( "#searchOptions").accordion( "option","active", false );
+			searchOpen = false;
 		}
 		else{
 			$( "#searchOptions").accordion( "option","active", 0 );
+			searchOpen = true;
 		}
 	});
 	
@@ -46,8 +60,20 @@ $(function() {
 	}});
 });
 
-function search(){
+$(window).bind('beforeunload',function(){
+	$( '#inpSearch' ).val("");
+	$.datepicker._clearDate($( '#dpFrom '));
+	$.datepicker._clearDate($( '#dpTo '));
+	$( '#inpObserver' ).val("");
+	$( '#inpExpID' ).val("");
+	$( '#inpTarget' ).val("");
+	});
+
+var searchOpen = false;
+function search(saveHistory){
 	Manager.store.remove('fq');
+	Manager.store.remove('q');
+	Manager.store.remove('sort');
 	searchval = $( '#inpSearch' ).val();
 	if (searchval == "")
 		searchval = "*";
@@ -57,6 +83,7 @@ function search(){
 	endDate = $( "#dpTo" ).datepicker("getDate");
 	observer = $( '#inpObserver' ).val();
 	experimentID = $( '#inpExpID' ).val();
+	target = $( '#inpTarget' ).val();
 	if (startDate != null & endDate != null){
 		//This line grabs the times from the dateselectors, subtracts 2 hours to get to SAST and adds the range to the query
 		Manager.store.addByValue('fq',"StartTime:[" + moment(startDate).subtract(2,'hours').format('YYYY-MM-DDTHH:mm:ss[Z]') + " TO " + moment(endDate).subtract(2,'hours').format('YYYY-MM-DDTHH:mm:ss[Z]') + "]");
@@ -70,27 +97,52 @@ function search(){
 	if (experimentID != ""){
 		Manager.store.addByValue('fq',"ExperimentID:"+experimentID);
 	}
+	if (target != ""){
+		Manager.store.addByValue('fq','Targets:"'+target+'"');
+	}
+	if (saveHistory){
+		history.pushState({"search":$( '#inpSearch' ).val(),
+			'startDate': startDate,
+			'endDate': endDate,
+			'observer': observer,
+			'experimentID':experimentID,
+			'target':target,
+			'searchOpen':searchOpen}, '', $(this).attr("href"));
+		}
 	Manager.doRequest();
-	history.pushState({"search":$( '#inpSearch' ).val(),
-		'startDate': startDate,
-		'endDate': endDate}, '', $(this).attr("href"));
+	if (searchOpen){
+		$( "#searchOptions" ).accordion( "option","active", 0 );
+		console.log("Yo");
+	}
 }
 
 //Handle pressing back button
 $(window).on("popstate", function() {
 	state = history.state;
+	console.log(history);
 	console.log(state);
+	
 	if (state == null)
-		state = {"search":"*:*"};
-	Manager.store.addByValue('q','(CAS.ProductTypeName:KatFile OR CAS.ProductTypeName:RTSTelescopeProduct) AND ' + state["search"]);
-	Manager.store.addByValue('sort', 'StartTime desc');
-	$( '#inpSearch' ).val( state["search"] );
-	if (startDate != null & endDate != null){
-		//This line grabs the times from the dateselectors, subtracts 2 hours to get to SAST and adds the range to the query
-		Manager.store.addByValue('fq',"StartTime:[" + moment(startDate).subtract(2,'hours').format('YYYY-MM-DDTHH:mm:ss[Z]') + " TO " + moment(endDate).subtract(2,'hours').format('YYYY-MM-DDTHH:mm:ss[Z]') + "]");
+		state = {"search":"*"};
+	if (state["searchOpen"]){
+		console.log("Yo");
+		$( "#searchOptions" ).accordion( "option","active", 0 );
 	}
-	Manager.doRequest();
-//    loadPage(location.href);
+	$( '#inpSearch' ).val( state["search"] );
+	if (state["startDate"] != null)
+		$( '#dpFrom ').datepicker("setDate",state["startDate"]);
+	else
+		$.datepicker._clearDate($( '#dpFrom '));
+	if (state["endDate"] != null)
+		$( '#dpTo' ).datepicker("setDate",state["endDate"]);
+	else
+		$.datepicker._clearDate($( '#dpTo '));
+	$( '#inpObserver' ).val(state["observer"]);
+	$( '#inpExpID' ).val(state["experimentID"]);
+	$( '#inpTarget' ).val(state["target"]);
+	
+	
+	search(false);
   });
 
 //function clickHandler(e) {
@@ -109,18 +161,21 @@ $(window).on("popstate", function() {
 //	});
 
 
+
 $( document ).ajaxComplete(function() {
-$( ".collapsible" ).accordion({
-	collapsible: true,
-	active: false,
-	heightStyle:"content",
-	activate: function(event, ui) {
-		if ( $( this ).hasClass("opened") ){
-			$( this ).removeClass("opened");
-		} else {
-        	$( this ).addClass("opened");
-        }}
-	});
+	
+	$( ".collapsible:not(#searchOptions)" ).accordion({
+		collapsible: true,
+		active: false,
+		heightStyle:"content",
+		activate: function(event, ui) {
+			if ( $( this ).hasClass("opened") ){
+				$( this ).removeClass("opened");
+			} else {
+	        	$( this ).addClass("opened");
+	        }}
+		});
+
 
 //collapse opened details on double click
 $( ".details" ).dblclick(function(){
