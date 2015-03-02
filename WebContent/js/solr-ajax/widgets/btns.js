@@ -74,7 +74,8 @@ function search(saveHistory){
 	Manager.store.remove('fq');
 	Manager.store.remove('q');
 	Manager.store.remove('sort');
-	searchval = $( '#inpSearch' ).val();
+	//Replace here to allow wild cards between search terms. Sometimes a underscore is used instead of a space, so need to handle both cases)
+	searchval = $( '#inpSearch' ).val().replace(" ", "*");
 	if (searchval == "")
 		searchval = "*";
 	products = "(CAS.ProductTypeName:KatFile OR CAS.ProductTypeName:RTSTelescopeProduct)";
@@ -91,7 +92,7 @@ function search(saveHistory){
 	console.log("PRODUCTS");
 	console.log(products);
 	Manager.store.addByValue('q', products + ' AND ' + searchval);
-	Manager.store.addByValue('sort', 'StartTime desc');
+	Manager.store.addByValue('sort', 'score desc, StartTime desc');
 	startDate = $( "#dpFrom" ).datepicker("getDate");
 	endDate = $( "#dpTo" ).datepicker("getDate");
 	observer = $( '#inpObserver' ).val();
