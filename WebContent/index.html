@@ -2,27 +2,27 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<script src="/Archive_Browser/js/jquery-2.1.1.js"></script>
-		<script src="/Archive_Browser/js/jquery-ui.min.js" type="text/javascript"></script>
-		<script src="/Archive_Browser/js/solr-ajax/Core.js" type="text/javascript"></script>
-		<link type="text/css" href="/Archive_Browser/css/jquery-ui.min.css" rel="stylesheet"/>
-		<link type="text/css" href="/Archive_Browser/css/ska_style.css" rel="stylesheet"/>
-		<link type="text/css" href="/Archive_Browser/css/archive.css" rel="stylesheet"/>
-		<script src="/Archive_Browser/js/solr-ajax/AbstractManager.js" type="text/javascript"></script>
-		<script src="/Archive_Browser/js/solr-ajax/Manager.jquery.js" type="text/javascript"></script>
-		<script src="/Archive_Browser/js/solr-ajax/Parameter.js" type="text/javascript"></script>
-		<script src="/Archive_Browser/js/solr-ajax/ParameterStore.js" type="text/javascript"></script>
-		<script src="/Archive_Browser/js/solr-ajax/AbstractWidget.js" type="text/javascript"></script>
+		<script src="/archive_search/js/jquery-2.1.1.js"></script>
+		<script src="/archive_search/js/jquery-ui.min.js" type="text/javascript"></script>
+		<script src="/archive_search/js/solr-ajax/Core.js" type="text/javascript"></script>
+		<link type="text/css" href="/archive_search/css/jquery-ui.min.css" rel="stylesheet"/>
+		<link type="text/css" href="/archive_search/css/ska_style.css" rel="stylesheet"/>
+		<link type="text/css" href="/archive_search/css/archive.css" rel="stylesheet"/>
+		<script src="/archive_search/js/solr-ajax/AbstractManager.js" type="text/javascript"></script>
+		<script src="/archive_search/js/solr-ajax/Manager.jquery.js" type="text/javascript"></script>
+		<script src="/archive_search/js/solr-ajax/Parameter.js" type="text/javascript"></script>
+		<script src="/archive_search/js/solr-ajax/ParameterStore.js" type="text/javascript"></script>
+		<script src="/archive_search/js/solr-ajax/AbstractWidget.js" type="text/javascript"></script>
 		
-		<script src="/Archive_Browser/js/solr-ajax/widgets/ResultWidget.js" type="text/javascript"></script>
-		<script src="/Archive_Browser/js/solr-ajax/widgets/PagerWidget.js" type="text/javascript"></script>
-		<script src="/Archive_Browser/js/solr-ajax/AbstractTextWidget.js" type="text/javascript"></script>
-		<script src="/Archive_Browser/js/solr-ajax/widgets/TextWidget.js" type="text/javascript"></script>
-		<script src="/Archive_Browser/js/reuters.js" type="text/javascript"></script>
-		<script src="/Archive_Browser/js/solr-ajax/widgets/btns.js" type="text/javascript"></script>
-		<script type="text/javascript" src="/Archive_Browser/js/moment.min.js"></script>
-		<script type="text/javascript" src="/Archive_Browser/js/jquery.media.js"></script>
-		<script type="text/javascript" src="/Archive_Browser/js/jquery.metadata.js"></script>
+		<script src="/archive_search/js/solr-ajax/widgets/ResultWidget.js" type="text/javascript"></script>
+		<script src="/archive_search/js/solr-ajax/widgets/PagerWidget.js" type="text/javascript"></script>
+		<script src="/archive_search/js/solr-ajax/AbstractTextWidget.js" type="text/javascript"></script>
+		<script src="/archive_search/js/solr-ajax/widgets/TextWidget.js" type="text/javascript"></script>
+		<script src="/archive_search/js/reuters.js" type="text/javascript"></script>
+		<script src="/archive_search/js/solr-ajax/widgets/btns.js" type="text/javascript"></script>
+		<script type="text/javascript" src="/archive_search/js/moment.min.js"></script>
+		<script type="text/javascript" src="/archive_search/js/jquery.media.js"></script>
+		<script type="text/javascript" src="/archive_search/js/jquery.metadata.js"></script>
 		<title>Archive Search</title>
 	</head>
 	<body id="body">
@@ -37,6 +37,11 @@
 					<td align="center">
 						<div id="search">
 							<input type="text" name="input" id="inpSearch">
+							<div style="line-height:150%;">
+							    <br>
+							</div>
+							<input type="checkbox" id="chkKATFile" value="KAT7" checked> KAT7
+							<input type="checkbox" id="chkRTSFile" value="RTS" checked> RTS
 							<div style="line-height:150%;">
 							    <br>
 							</div>

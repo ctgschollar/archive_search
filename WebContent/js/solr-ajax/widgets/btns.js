@@ -77,7 +77,20 @@ function search(saveHistory){
 	searchval = $( '#inpSearch' ).val();
 	if (searchval == "")
 		searchval = "*";
-	Manager.store.addByValue('q','(CAS.ProductTypeName:KatFile OR CAS.ProductTypeName:RTSTelescopeProduct) AND ' + searchval);
+	products = "(CAS.ProductTypeName:KatFile OR CAS.ProductTypeName:RTSTelescopeProduct)";
+	console.log("KATFILE");
+	console.log ($( '#chkKATFile' ).prop( "checked" ));
+	console.log("RTSFILE");
+	console.log ($( '#chkRTSFile' ).attr("checked"));
+	if ( $( '#chkKATFile' ).prop( "checked" ) & !$( '#chkRTSFile' ).prop( "checked" ) ){
+		products = "CAS.ProductTypeName:KatFile";
+	}
+	else if ( !$( '#chkKATFile' ).prop( "checked" ) & $( '#chkRTSFile' ).prop( "checked" ) ){
+		products = "CAS.ProductTypeName:RTSTelescopeProduct";
+	}
+	console.log("PRODUCTS");
+	console.log(products);
+	Manager.store.addByValue('q', products + ' AND ' + searchval);
 	Manager.store.addByValue('sort', 'StartTime desc');
 	startDate = $( "#dpFrom" ).datepicker("getDate");
 	endDate = $( "#dpTo" ).datepicker("getDate");

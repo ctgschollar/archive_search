@@ -218,7 +218,8 @@
 					var snippet = '';
 					var date = moment(doc['StartTime']);
 					snippet += "<table><tr><td width = 200px><b>Observer</b> :</td><td>" + doc['Observer'] + "</td></tr>"
-							+ "<tr><td><b>Experiment ID</b> :</td><td> " + doc['ExperimentID']
+					        + "<tr><td><b>Product Type</b> :</td><td>" + doc["CAS.ProductTypeName"] + "</td></tr>"
+							+ "<tr><td><b>Experiment ID</b> :</td><td> <a title='Click link to see experiement log' href='http://obs.kat7.karoo.kat.ac.za:8081/tailtask/" + doc['ExperimentID'] + "/progress'>" + doc['ExperimentID'] + "</a>"
 							+ "</td></tr>"
 					 		+ "<tr><td><b>Start Time</b> :</td><td> "
 							+ date.format('YYYY-MM-DD HH:mm:ss') + "</td></tr>";
@@ -235,7 +236,7 @@
 					if (doc.Details != undefined) {
 						snippet += "<pre>" + "<div class='collapsible'>"
 								+ "<h3>Details</h3>"
-								+ "<div class='details'><p>" + doc.Details
+								+ "<div class='details'><p class= 'monospace'>" + doc.Details
 								+ "</p></div>" + "</div>" + "</pre>";
 					}
 					var output = "<div class='result'><div id= 'files" + doc['ExperimentID']
