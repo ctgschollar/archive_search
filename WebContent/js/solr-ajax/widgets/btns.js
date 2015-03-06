@@ -60,6 +60,26 @@ $(function() {
 	}});
 });
 
+function setClipboards (){
+	var clipboardClients = new Array();
+//Copy to clipboard
+$( ".toClipboard" ).each(function(){
+//	alert ("CLIPBOARDING");
+	var index = clipboardClients.length;
+	clipboardClients.push (new ZeroClipboard( $( this ) ) );
+	clipboardClients[index].on( "ready", function( readyEvent ) {
+	 // alert( "ZeroClipboard SWF is ready!" );
+//		clipboardClients[index].on( "aftercopy", function( event ) {
+     // `this` === `client`
+     // `event.target` === the element that was clicked
+//		event.target.style.display = "none";
+		//alert("Copied text to clipboard: " + event.data["text/plain"] );
+//		} );
+	} );
+} );
+}
+
+
 $(window).bind('beforeunload',function(){
 	$( '#inpSearch' ).val("");
 	$.datepicker._clearDate($( '#dpFrom '));
@@ -130,6 +150,10 @@ function search(saveHistory){
 	}
 }
 
+
+
+
+
 //Handle pressing back button
 $(window).on("popstate", function() {
 	state = history.state;
@@ -197,4 +221,5 @@ $( ".details" ).dblclick(function(){
 	$( window ).delay(1000).scrollTop( $( this ).offset().top - 180 ); //return to the result you opened
 
 });
+
 });

@@ -58,6 +58,8 @@
 							$links.append($('<li></li>').append(items[j]));
 						}
 					}
+					
+						setClipboards();
 				},
 
 				template : function(doc) {
@@ -217,9 +219,12 @@
 					var filesize = parseFloat(doc.FileSize) / 1073741824;
 					var snippet = '';
 					var date = moment(doc['StartTime']);
+					var obs_log_server = "obs.kat7.karoo.kat.ac.za";
+					if (doc["CAS.ProductTypeName"] == "RTSTelescopeProduct")
+						obs_log_server = "obs.mkat-rts.karoo.kat.ac.za"
 					snippet += "<table><tr><td width = 200px><b>Observer</b> :</td><td>" + doc['Observer'] + "</td></tr>"
 					        + "<tr><td><b>Product Type</b> :</td><td>" + doc["CAS.ProductTypeName"] + "</td></tr>"
-							+ "<tr><td><b>Experiment ID</b> :</td><td> <a title='Click link to see experiement log' href='http://obs.kat7.karoo.kat.ac.za:8081/tailtask/" + doc['ExperimentID'] + "/progress'>" + doc['ExperimentID'] + "</a>"
+							+ "<tr><td><b>Experiment ID</b> :</td><td> <a title='Click link to see experiement log' href='http://" + obs_log_server + ":8081/tailtask/" + doc['ExperimentID'] + "/progress'>" + doc['ExperimentID'] + "</a>"
 							+ "</td></tr>"
 					 		+ "<tr><td><b>Start Time</b> :</td><td> "
 							+ date.format('YYYY-MM-DD HH:mm:ss') + "</td></tr>";
@@ -231,7 +236,11 @@
 					}
 							snippet += " <tr><td><b> Observation Data </b> :</td><td> <a href = "
 							+ link + " >" + doc.Filename + "</a> ("
-							+ filesize.toFixed(2) + " GB) </td></tr></table><br></div>";
+							+ filesize.toFixed(2) + " GB) </td></tr>"
+							+ " <tr><td><b> File Location </b> :</td><td>"
+							+ "<button id='btnCpy" + doc['ExperimentID'] +"' data-clipboard-text='" + doc["FileLocation"] + "/" + doc.Filename + "' class='toClipboard' title='Copy to clipboard'> <img src = '/archive_search/img/clipboard.png' style='height:20px;width:20px;'alt = 'Copy to clipboard'> </button>"
+							+ "&nbsp;&nbsp;" + doc["FileLocation"] + "/" + doc.Filename
+							+ "</td></tr></table><br></div>";
 							
 					if (doc.Details != undefined) {
 						snippet += "<pre>" + "<div class='collapsible'>"
