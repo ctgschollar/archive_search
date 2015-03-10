@@ -60,6 +60,7 @@
 					}
 					
 						setClipboards();
+						setDelete();
 				},
 
 				template : function(doc) {
@@ -84,14 +85,6 @@
 											+ doc['ExperimentID']
 											+ "'> <br>"
 											+ "<div class='details'>";
-//											$("#files" + doc['ExperimentID'])
-//													.append("<button type='button' class='seeReductions' id='btnSeeReductions"
-//															+ doc['ExperimentID']
-//															+"> Show Reductions </button>"
-//															+ "<div class='collapsible' id='collapseSeeReductions"
-//															+ doc['ExperimentID']
-//															+ "'> <br>"
-//															+ "<div class='details'><p>");
 										var sort_array = Array();
 										for (var i = 0; i < result["response"]["docs"].length; i++){
 											sort_array[i] = [result["response"]["docs"][i]["ReductionName"],i];
@@ -113,14 +106,6 @@
 												+ "</b> : </td><td><a href = "
 												+ link
 												+ "><button type='button' style='float:right;'> Download Zip </button></a>";
-//											$("#files" + doc['ExperimentID'])
-//													.append(
-//															""
-//																	+ "<b> "
-//																	+ result["response"]["docs"][i]["ReductionName"]
-//																	+ "</b> : <a href = "
-//																	+ link
-//																	+ "> Download Zip </a>");
 											files = result["response"]["docs"][index]["CAS.ReferenceDatastore"].sort();
 											fileshtml = "";
 
@@ -238,8 +223,10 @@
 							+ link + " >" + doc.Filename + "</a> ("
 							+ filesize.toFixed(2) + " GB) </td></tr>"
 							+ " <tr><td><b> File Location </b> :</td><td>"
-							+ "<button id='btnCpy" + doc['ExperimentID'] +"' data-clipboard-text='" + doc["FileLocation"] + "/" + doc.Filename + "' class='toClipboard' title='Copy to clipboard'> <img src = '/archive_search/img/clipboard.png' style='height:20px;width:20px;'alt = 'Copy to clipboard'> </button>"
-							+ "&nbsp;&nbsp;" + doc["FileLocation"] + "/" + doc.Filename
+							+ doc["FileLocation"] + "/" + doc.Filename
+							+ "</td> <td align='right' width = 100px >" + "<button id='btnCpy" + doc['ExperimentID'] +"' data-clipboard-text='" + doc["FileLocation"] + "/" + doc.Filename + "' class='toClipboard' title='Copy to clipboard'> <img src = '/archive_search/img/clipboard.png' style='height:20px;width:20px;'alt = 'Copy to clipboard'> </button>"
+							+ " <tr><td><b> Delete Observation </b> :</td><td>"
+							+ "<button id='btnDel" + doc['ExperimentID'] + "' class='delete' value='" + doc.id + ":" + doc["FileLocation"] + "/" + doc.Filename + "'> Delete Observation </button>"
 							+ "</td></tr></table><br></div>";
 							
 					if (doc.Details != undefined) {

@@ -60,6 +60,19 @@ $(function() {
 	}});
 });
 
+function setDelete(){
+//	alert("set delete");
+	$( ".delete" ).each (function(){
+//		alert ("setting delete");
+		$( this ).click(function(event){
+//			alert ("clicked");
+			values = this.value.split(":");
+			console.log(values);
+			deleteProduct(values[0], values[1]);
+		});
+	});
+}
+
 function setClipboards (){
 	var clipboardClients = new Array();
 //Copy to clipboard
@@ -79,6 +92,110 @@ $( ".toClipboard" ).each(function(){
 } );
 }
 
+var getProductByIdStr = '<?xml version="1.0"?>'+
+'<methodCall>'+
+   '<methodName>filemgr.getProductById</methodName>'+
+      '<params>'+
+         '<param>'+
+            '<value><string>REPLACE</string></value>'+
+         '</param>'+
+      '</params>'+
+'</methodCall>';
+
+var removeProductStr = '<?xml version="1.0"?>'+
+'<methodCall>'+
+   '<methodName>filemgr.removeProduct</methodName>'+
+      '<params>'+
+            'REPLACE'+
+      '</params>'+
+'</methodCall>';
+
+var removeFileStr = '<?xml version="1.0"?>'+
+'<methodCall>'+
+'<methodName>filemgr.removeFile</methodName>'+
+   '<params>'+
+      '<param>'+
+         '<value><string>REPLACE</string></value>'+
+      '</param>'+
+   '</params>'+
+'</methodCall>';
+
+
+function deleteProduct (productId, dataStoreReference) {  
+    	console.log (productId);
+    	$.ajax({url:"http://kat-archive.kat.ac.za:9100",
+    			type: "post",
+    			data:getProductByIdStr.replace('REPLACE', productId),
+    			dataType:"application/x-www-form-urlencoded",
+    				complete:function (xhr, status) {
+    			        xmlResponse = $.parseXML(xhr.responseText);
+    			        $xml = $( xmlResponse );
+    			        console.log(dataStoreReference);
+    			        
+    			        var product = "";    			        
+			        	$xml.find("param").each(function(){
+			        		product = $(this)[0].outerHTML;
+			        	});
+			        	console.log(product);
+    			        
+    			        $.ajax({url:"http://kat-archive.kat.ac.za:9100",
+    		    			type: "post",
+    		    			data:removeFileStr.replace('REPLACE', dataStoreReference),
+    		    			dataType:"application/x-www-form-urlencoded",
+    		    				complete:function (xhr, status) {
+    		    			        xmlResponse = $.parseXML(xhr.responseText);
+    		    			        console.log("RemoveFile response");
+    		    			        $xml = $( xmlResponse );
+    		    			        console.log($xml);
+    		    			        var success = "";
+    		    			        $xml.find("methodResponse").each(function(){
+    		    			        	success = $(this)[0].textContent;
+    		    			        });
+    		    			        console.log(success);
+    		    			        
+    		    			        if (success == "1"){
+    		    			        	$.ajax({url:"http://kat-archive.kat.ac.za:9100",
+    		        		    			type: "post",
+    		        		    			data:removeProductStr.replace('REPLACE', product),
+    		        		    			dataType:"application/x-www-form-urlencoded",
+    		        		    				complete:function (xhr, status) {
+    		        		    			        xmlResponse = $.parseXML(xhr.responseText);
+    		        		    			        $xml = $( xmlResponse );
+    		        		    			        console.log("RemoveProduct response");
+    		        		    			        console.log($xml);
+    		        		    			        $xml.find("methodResponse").each(function(){
+    		        		    			        	success = $(this)[0].textContent;
+    		        		    			        });
+    		        		    			        console.log(success);
+    		        		    			        if (success == "1"){
+    		        		    			        	search(false);
+    		        		    			        }
+    		        		    			        else
+    		        		    			        	alert ("Remove Product From Solr Failed");
+    		        		    			        
+    		        		    		}});
+    		    			        }
+    		    			        else
+    		    			        	alert("Delete File Failed");
+    		    		}});
+    			        
+    			        
+    			        
+    			        
+    			        
+//    			        var names = new Array();
+//    			        	$xml.find("value").each(function(){
+//    			        		if ($(this)[0].childElementCount == 0){
+//    			        			if($(this)[0].previousSibling != null && $(this)[0].previousSibling.nodeName == "name" && $(this)[0].previousSibling.textContent == "dataStoreReference")
+//    			        				dataStoreReference = $(this)[0].textContent;
+//    			        		}
+//    			        	});
+    			        
+    			        	
+    			        }
+    				}
+    	);
+} 
 
 $(window).bind('beforeunload',function(){
 	$( '#inpSearch' ).val("");
