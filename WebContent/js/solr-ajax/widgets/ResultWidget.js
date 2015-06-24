@@ -226,7 +226,8 @@
 							+ doc["FileLocation"] + "/" + doc.Filename
 							+ "</td> <td align='right' width = 100px >" + "<button id='btnCpy" + doc['ExperimentID'] +"' data-clipboard-text='" + doc["FileLocation"] + "/" + doc.Filename + "' class='toClipboard' title='Copy to clipboard'> <img src = '/archive_search/img/clipboard.png' style='height:20px;width:20px;'alt = 'Copy to clipboard'> </button>"
 							+ " <tr><td><b> Delete Observation </b> :</td><td>"
-							+ "<button id='btnDel" + doc['ExperimentID'] + "' class='delete' value='" + doc.id + ":" + doc["FileLocation"] + "/" + doc.Filename + "'> Delete Observation </button>"
+							+ "<button id='btnDel" + doc['ExperimentID'] + "' class='delete' value='" + doc.id + "'> Delete Observation </button>"
+							+ "<div id='dlg" + doc.id + "' class='confirm' value='" + doc.id + ":" + doc["FileLocation"] + "/" + doc.Filename + "' title='Delete experiment " +  doc['ExperimentID'] +"?' style='text-align: center;'> Delete " + doc.Description + "?</div>"
 							+ "</td></tr></table><br></div>";
 							
 					if (doc.Details != undefined) {

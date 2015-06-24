@@ -62,13 +62,33 @@ $(function() {
 
 function setDelete(){
 //	alert("set delete");
+	$( ".confirm" ).each (function(){
+//		console.log( $( this ).attr("value") );
+		$( this ).dialog({
+			autoOpen: false,
+			modal:true,
+			width:400,
+			buttons:{
+				"Delete":function() {
+					values = $( this ).attr("value").split(":");
+					console.log(values);
+					deleteProduct(values[0], values[1]);
+					$( this ).dialog( "close" );
+				},
+				"Cancel":function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+	});
 	$( ".delete" ).each (function(){
 //		alert ("setting delete");
 		$( this ).click(function(event){
-//			alert ("clicked");
-			values = this.value.split(":");
-			console.log(values);
-			deleteProduct(values[0], values[1]);
+			console.log ($( this ).val());
+//			values = this.value.split(":");
+//			console.log(values);
+//			deleteProduct(values[0], values[1]);
+			$( '#dlg'+$( this ).val() ).dialog( "open" );
 		});
 	});
 }
@@ -212,7 +232,7 @@ function search(saveHistory){
 	Manager.store.remove('q');
 	Manager.store.remove('sort');
 	//Replace here to allow wild cards between search terms. Sometimes a underscore is used instead of a space, so need to handle both cases)
-	searchval = $( '#inpSearch' ).val().replace(" ", "*");
+	searchval = $( '#inpSearch' ).val();
 	if (searchval == "")
 		searchval = "*";
 	products = "(CAS.ProductTypeName:KatFile OR CAS.ProductTypeName:RTSTelescopeProduct)";
