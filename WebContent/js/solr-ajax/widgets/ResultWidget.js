@@ -69,14 +69,17 @@
 					var stat = "NOTHIN";
 					$
 							.post(
-									'http://kat-archive.kat.ac.za:8983/solr/collection1/select?q=ExperimentID:'
-											+ doc['ExperimentID']
+									'http://kat-archive.kat.ac.za:8983/solr/collection1/select?q=InputDataProductId:'
+											+ doc['CAS.ProductId']
 											+ ' AND CAS.ProductTypeName:RTSReductionProduct&wt=json&json.wrf=?',
 									{},
 									function(data, status) {
+										
 										append = "";
 										result = data;
 										stat = status;
+										
+										
 										if (result["response"]["docs"].length > 0)
 											append += "<button type='button' class='seeReductions' id='btnSeeReductions"
 												+ doc['ExperimentID']
@@ -97,6 +100,7 @@
 
 										for (var i = 0; i < result["response"]["docs"].length; i++) {
 											index = sorted[i][1];
+											console.log(result["response"]["docs"][index]["id"]);
 											link = "http://kat-archive.kat.ac.za:8983/fmprod/data?productID="
 													+ result["response"]["docs"][index]["id"]
 													+ "&format=application/x-zip";
@@ -117,9 +121,9 @@
 																.substring(
 																		27,
 																		files[j].length);
-												fileshtml += "<a href= "
+												fileshtml += "<a href= '"
 														+ link
-														+ ">"
+														+ "' target='_blank' >"
 														+ url_deconstruct[url_deconstruct.length - 1]
 														+ "</a><br>";
 											}
@@ -199,8 +203,8 @@
 														});
 									}, "json");
 
-					var link = "http://kat-archive.kat.ac.za:8983/fmprod/data?productID="
-							+ doc.id;
+					var link = "http://kat-archive.kat.ac.za/"
+						+ doc["FileLocation"][0].substring(9, doc["FileLocation"][0].length) + "/" + doc.Filename;
 					var filesize = parseFloat(doc.FileSize) / 1073741824;
 					var snippet = '';
 					var date = moment(doc['StartTime']);

@@ -235,17 +235,27 @@ function search(saveHistory){
 	searchval = $( '#inpSearch' ).val();
 	if (searchval == "")
 		searchval = "*";
-	products = "(CAS.ProductTypeName:KatFile OR CAS.ProductTypeName:RTSTelescopeProduct)";
+//	products = "(CAS.ProductTypeName:KatFile OR CAS.ProductTypeName:RTSTelescopeProduct OR CAS.ProductTypeName:MeerKATAR1TelescopeProduct)";
+	products = "( CAS.ProductTypeName:NA";
 	console.log("KATFILE");
 	console.log ($( '#chkKATFile' ).prop( "checked" ));
 	console.log("RTSFILE");
 	console.log ($( '#chkRTSFile' ).attr("checked"));
-	if ( $( '#chkKATFile' ).prop( "checked" ) & !$( '#chkRTSFile' ).prop( "checked" ) ){
-		products = "CAS.ProductTypeName:KatFile";
+	console.log("AR1FILE");
+	console.log ($( '#chkRTSFile' ).attr("checked"));
+	
+	if ( $( '#chkKATFile' ).prop( "checked" )){
+		products += " OR CAS.ProductTypeName:KatFile";
 	}
-	else if ( !$( '#chkKATFile' ).prop( "checked" ) & $( '#chkRTSFile' ).prop( "checked" ) ){
-		products = "CAS.ProductTypeName:RTSTelescopeProduct";
+	if ( $( '#chkRTSFile' ).prop( "checked" ) ){
+		products += " OR CAS.ProductTypeName:RTSTelescopeProduct";
 	}
+	if ( $( '#chkAR1File' ).prop( "checked" ) ){
+		products += " OR CAS.ProductTypeName:MeerKATAR1TelescopeProduct";
+	}
+	
+	products += " )";
+		
 	console.log("PRODUCTS");
 	console.log(products);
 	Manager.store.addByValue('q', products + ' AND ' + searchval);
@@ -263,6 +273,7 @@ function search(saveHistory){
 		Manager.store.addByValue('fq',"StartTime:[" + moment(startDate).subtract(2,'hours').format('YYYY-MM-DDTHH:mm:ss[Z]') + " TO NOW]");
 	}
 	console.log (observer);
+	Manager.store.addByValue('fq','CAS.ProductTransferStatus:"RECEIVED"');
 	if (observer != "")
 		Manager.store.addByValue('fq',"Observer:"+observer);
 	if (experimentID != ""){

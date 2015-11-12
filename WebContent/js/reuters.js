@@ -40,7 +40,7 @@ var Manager;
     Manager.init();
         
     //Create query
-    Manager.store.addByValue('q', 'CAS.ProductTypeName:KatFile OR CAS.ProductTypeName:RTSTelescopeProduct');
+    Manager.store.addByValue('q', '(CAS.ProductTypeName:KatFile OR CAS.ProductTypeName:RTSTelescopeProduct OR CAS.ProductTypeName:MeerKATAR1TelescopeProduct) AND CAS.ProductTransferStatus:"RECEIVED"');
     Manager.store.addByValue('sort', 'StartTime desc');
     //execute query
     Manager.doRequest();
