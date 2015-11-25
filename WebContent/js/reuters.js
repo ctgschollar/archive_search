@@ -38,13 +38,23 @@ var Manager;
     
     //must call init after adding widgets
     Manager.init();
-        
+    
+    if(window.location.hash) {
+    	state = JSON.parse(window.location.hash.substr(1).split('&'));
+    	console.log (state);
+    	setState(state);
+    	search(false);
+    	printState();
+    }
+    else{   
     //Create query
     Manager.store.addByValue('q', '(CAS.ProductTypeName:KatFile OR CAS.ProductTypeName:RTSTelescopeProduct OR CAS.ProductTypeName:MeerKATAR1TelescopeProduct) AND CAS.ProductTransferStatus:"RECEIVED"');
+    
     Manager.store.addByValue('sort', 'StartTime desc');
     //execute query
     Manager.doRequest();
     //result in Manager.response
+    }
     });
   
 })(jQuery);

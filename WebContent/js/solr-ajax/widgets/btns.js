@@ -283,13 +283,25 @@ function search(saveHistory){
 		Manager.store.addByValue('fq','Targets:"'+target+'"');
 	}
 	if (saveHistory){
-		history.pushState({"search":$( '#inpSearch' ).val(),
-			'startDate': startDate,
-			'endDate': endDate,
-			'observer': observer,
-			'experimentID':experimentID,
-			'target':target,
-			'searchOpen':searchOpen}, '', $(this).attr("href"));
+		var endstr = null;
+		var startstr = null
+		if (endDate != null)
+			endstr = endDate.getMonth()+1+"/"+endDate.getDate()+"/"+endDate.getFullYear();
+		if (startDate != null)
+			startstr = startDate.getMonth()+1+"/"+startDate.getDate()+"/"+startDate.getFullYear();
+				
+		state = {"search":$( '#inpSearch' ).val(),
+				'startDate': startstr,
+				'endDate': endstr,
+				'observer': observer,
+				'experimentID':experimentID,
+				'target':target,
+				'searchOpen':searchOpen,
+				'RTS':$( '#chkRTSFile' ).prop( "checked" ),
+				'KAT7':$( '#chkKATFile' ).prop( "checked" ),
+				'AR1':$( '#chkAR1File' ).prop( "checked" )};
+		
+		history.pushState(state, '', '#'+JSON.stringify(state));
 		}
 	Manager.doRequest();
 	if (searchOpen){
@@ -308,6 +320,14 @@ $(window).on("popstate", function() {
 	console.log(history);
 	console.log(state);
 	
+	setState(state);	
+	search(false);
+	printState();
+  });
+
+function setState(state){
+	console.log('Before state');
+	printState();
 	if (state == null)
 		state = {"search":"*"};
 	if (state["searchOpen"]){
@@ -315,21 +335,43 @@ $(window).on("popstate", function() {
 		$( "#searchOptions" ).accordion( "option","active", 0 );
 	}
 	$( '#inpSearch' ).val( state["search"] );
-	if (state["startDate"] != null)
-		$( '#dpFrom ').datepicker("setDate",state["startDate"]);
+	if (state["startDate"] != null){
+		console.log("startDate = " + state["startDate"]);
+//		$( '#dpFrom ').datepicker("setDate",Date.parse(state["startDate"]));
+//		$( '#dpFrom ').datepicker("defaultDate",Date.parse(state["startDate"]));
+		$( '#dpFrom ').val(state["startDate"]);
+	}
 	else
 		$.datepicker._clearDate($( '#dpFrom '));
-	if (state["endDate"] != null)
-		$( '#dpTo' ).datepicker("setDate",state["endDate"]);
+	if (state["endDate"] != null){
+//		$( '#dpTo' ).datepicker("setDate",Date.parse(state["endDate"]));
+		$( '#dpTo' ).prop("Date",Date.parse(state["endDate"]));
+		$( '#dpTo ').val(state["endDate"]);
+		console.log("endDate = " + state["endDate"]);
+	}
 	else
 		$.datepicker._clearDate($( '#dpTo '));
 	$( '#inpObserver' ).val(state["observer"]);
 	$( '#inpExpID' ).val(state["experimentID"]);
 	$( '#inpTarget' ).val(state["target"]);
+	$( '#chkRTSFile' ).prop( "checked",state["RTS"]);
+	$( '#chkKATFile' ).prop( "checked",state["KAT7"]);
+	$( '#chkAR1File' ).prop( "checked",state["AR1"]);
 	
-	
-	search(false);
-  });
+
+}
+
+function printState(){
+	console.log ('inpSearch ' + $( '#inpSearch' ).val());
+	console.log  ('dpFrom ' + $( "#dpFrom" ).datepicker("getDate"));
+	console.log ('dpTo ' + $( "#dpTo" ).datepicker("getDate"));
+	console.log('inpObserver ' + $( '#inpObserver' ).val());
+	console.log('inpExpID ' + $( '#inpExpID' ).val());
+	console.log( 'inpTarget ' + $('#inpTarget' ).val());
+	console.log('chkRTSFile ' + $( '#chkRTSFile' ).prop( "checked"));
+	console.log('chkKATFile ' + $( '#chkKATFile' ).prop( "checked"));
+	console.log('chkAR1File ' + $('#chkAR1File' ).prop( "checked"));
+}
 
 //function clickHandler(e) {
 ////  history.pushState({"search":$( '#inpSearch' ).val()}, null, "http://kat-archive.kat.ac.za:8983/Archive_Browser/");

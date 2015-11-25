@@ -79,7 +79,7 @@
 										result = data;
 										stat = status;
 										
-										
+										//Reductions!
 										if (result["response"]["docs"].length > 0)
 											append += "<button type='button' class='seeReductions' id='btnSeeReductions"
 												+ doc['ExperimentID']
@@ -90,58 +90,78 @@
 											+ "<div class='details'>";
 										var sort_array = Array();
 										for (var i = 0; i < result["response"]["docs"].length; i++){
-											sort_array[i] = [result["response"]["docs"][i]["ReductionName"],i];
+											sort_array[i] = [result["response"]["docs"][i]["ReductionName"], result["response"]["docs"][i]['StartTime'],i];
 										}
+										sorted = sort_array;
 										sorted = sort_array.sort(function(x,y){
-											var xp = x[0];
-											var yp = y[0];
-											return xp == yp ? 0 : xp < yp ? -1 : 1;
+											var datex = moment(x[1]);
+											var datey = moment(y[1]);
+											if (datex.isSame(datey)){
+												return x[0] < y[0] ? -1 : 1;
+											}
+											else
+												return datex.isAfter(datey) ? -1 : 1;
+//											if (x[0] == y[0]){
+//												var datex = moment(x[1]);
+//												var datey = moment(y[1]);
+//												return datex.isAfter(datey) ? -1 : 1;
+//											}
+//											else
+//												return x[0] < y[0] ? -1 : 1;
 										});
 
 										for (var i = 0; i < result["response"]["docs"].length; i++) {
-											index = sorted[i][1];
+											index = sorted[i][2];
 											console.log(result["response"]["docs"][index]["id"]);
 											link = "http://kat-archive.kat.ac.za:8983/fmprod/data?productID="
 													+ result["response"]["docs"][index]["id"]
 													+ "&format=application/x-zip";
-											append += "<table width = 100% ><tr><td>"
+											var date = moment(result["response"]["docs"][index]['StartTime']);
+											append += "<table width = 100% height = 100%><tr><td width = 30%>"
 												+ "<b> "
 												+ result["response"]["docs"][index]["ReductionName"]
-												+ "</b> : </td><td><a href = "
+												+ "</b></td><td> (" + date.format('YYYY-MM-DD HH:mm:ss') + ") </td><td><a href = "
 												+ link
 												+ "><button type='button' style='float:right;'> Download Zip </button></a>";
 											files = result["response"]["docs"][index]["CAS.ReferenceDatastore"].sort();
 											fileshtml = "";
-
+											
+											//Reduction Links
 											for (var j = 0; j < files.length; j++) {
 												url_deconstruct = files[j]
 														.split("/");
-												link = "http://kat-archive.kat.ac.za/archive/data/"
-														+ files[j]
-																.substring(
-																		27,
-																		files[j].length);
-												fileshtml += "<a href= '"
-														+ link
-														+ "' target='_blank' >"
-														+ url_deconstruct[url_deconstruct.length - 1]
-														+ "</a><br>";
+												if (url_deconstruct[url_deconstruct.length -1] != ""){
+													link = "http://kat-archive.kat.ac.za/archive/data/"
+															+ files[j]
+																	.substring(
+																			27,
+																			files[j].length);
+													fileshtml += "<a href= '"
+															+ link
+															+ "' target='_blank' >"
+															+ url_deconstruct[url_deconstruct.length - 1]
+															+ "</a><br>";
+												}
 											}
+											
+											
 											append +="<button type='button' style='float:right;' class='seeFiles' id='btnSeeFiles"
 												+ doc['ExperimentID']
 											+ index
-											+ "'>Show Files</button></td></tr></table>"
+											+ "'>Show Files</button></td></tr>"
+//											+ "</table>"
+											+ "<tr><td>"
 											+ "<div class='collapsible' id='collapseSeeFiles"
 											+ doc['ExperimentID']
 											+ index
-											+ "'> <br>"
+											+ "'> <div width=10px style='opacity:0;border:none;padding:5px'></div>"
 											+ "<div class='details'>"
 											+ fileshtml
-											+ "</div></div>";
-
-											
+											+ "</div>  </div>"
+											+ "</td></tr></table>";
 											
 										}
+//										console.log (append);
 										$("#files" + doc['ExperimentID']).append(append);
 										
 										
@@ -202,6 +222,8 @@
 
 														});
 									}, "json");
+					
+					//Observations
 
 					var link = "http://kat-archive.kat.ac.za/"
 						+ doc["FileLocation"][0].substring(9, doc["FileLocation"][0].length) + "/" + doc.Filename;
