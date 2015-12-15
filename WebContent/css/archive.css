@@ -15,3 +15,11 @@
 .monospace {
 	font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
 }
+
+.ui-button.ui-widget{
+	height:36px
+}
+
+.ui-selectmenu-menu.ui-button{
+	height:40px
+}

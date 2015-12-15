@@ -48,8 +48,28 @@
 							<div style="line-height:150%;">
 							    <br>
 							</div>
-							<button type="button" id="btnSearch">Search</button>
-							<button type="button" id="btnSearchOptions">Search Options</button>
+							<table>
+								<tr>
+									<td colspan="2" align = "center">
+										<button type="button" id="btnSearch">Search</button>
+									</td>
+								</tr>
+								<tr>
+									<td valign="top" width = 50% align = "right">
+										<button type="button" id="btnSearchOptions">Search Options</button>
+									</td>					    
+									<td valign="top">
+									    <select name="orderBy" id="orderBy">
+									      	<option value = 0>Order By</option>
+									      	<option value = 1>Start Time : Descending</option>
+									      	<option value = 2>Start Time : Ascending</option>
+									      	<option value = 3>Observer : Descending</option>
+									      	<option value = 4>Observer : Ascending</option>
+									    </select>
+								    </td>
+							    </tr>
+						    </table>
+							<!-- </fieldset> -->
 							<div class='collapsible' id="searchOptions">
 								<br>
 								<div class='options'>

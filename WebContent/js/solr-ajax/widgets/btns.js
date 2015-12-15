@@ -2,6 +2,8 @@
 $(function() {
 	$( "button" ).button();
 	
+	$( "#orderBy" ).selectmenu();
+	
 	$( "#searchOptions" ).accordion({
 		collapsible: true,
 		active: false,
@@ -259,7 +261,22 @@ function search(saveHistory){
 	console.log("PRODUCTS");
 	console.log(products);
 	Manager.store.addByValue('q', products + ' AND ' + searchval);
-	Manager.store.addByValue('sort', 'score desc, StartTime desc');
+	if ( $( '#orderBy ').val() == 0){
+		Manager.store.addByValue('sort', 'score desc, StartTime desc');
+	}
+	else if ( $( '#orderBy ').val() == 1){
+		Manager.store.addByValue('sort', 'StartTime desc');
+	}
+	else if ( $( '#orderBy ').val() == 2){
+		Manager.store.addByValue('sort', 'StartTime asc');
+	}
+	else if ( $( '#orderBy ').val() == 3){
+		Manager.store.addByValue('sort', 'Observer asc');
+	}
+	else if ( $( '#orderBy ').val() == 4){
+		Manager.store.addByValue('sort', 'Observer desc');
+	}
+	
 	startDate = $( "#dpFrom" ).datepicker("getDate");
 	endDate = $( "#dpTo" ).datepicker("getDate");
 	observer = $( '#inpObserver' ).val();
@@ -299,7 +316,8 @@ function search(saveHistory){
 				'searchOpen':searchOpen,
 				'RTS':$( '#chkRTSFile' ).prop( "checked" ),
 				'KAT7':$( '#chkKATFile' ).prop( "checked" ),
-				'AR1':$( '#chkAR1File' ).prop( "checked" )};
+				'AR1':$( '#chkAR1File' ).prop( "checked" ),
+				'order': $( '#orderBy ').val()};
 		
 		history.pushState(state, '', '#'+JSON.stringify(state));
 		}
@@ -329,7 +347,8 @@ function setState(state){
 	console.log('Before state');
 	printState();
 	if (state == null)
-		state = {"search":"*"};
+		state = {"search":"",
+				'order':0};
 	if (state["searchOpen"]){
 		console.log("Yo");
 		$( "#searchOptions" ).accordion( "option","active", 0 );
@@ -351,6 +370,11 @@ function setState(state){
 	}
 	else
 		$.datepicker._clearDate($( '#dpTo '));
+	
+	$( '#orderBy' ).val(state['order']);
+//	$( '#orderBy' ).selectmenu("value",state['order']);
+//	$('#orderBy span').text($("#orderBy option[value='" + state['order'] +"']").text());
+	$( '#orderBy' ).selectmenu('refresh',true);
 	$( '#inpObserver' ).val(state["observer"]);
 	$( '#inpExpID' ).val(state["experimentID"]);
 	$( '#inpTarget' ).val(state["target"]);
