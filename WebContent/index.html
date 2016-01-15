@@ -19,6 +19,7 @@
 		<script src="/archive_search/js/solr-ajax/AbstractTextWidget.js" type="text/javascript"></script>
 		<script src="/archive_search/js/solr-ajax/widgets/TextWidget.js" type="text/javascript"></script>
 		<script src="/archive_search/js/zeroclipboard/ZeroClipboard.js" type = "text/javascript"></script>
+		<script src="/archive_search/js/jquery.multiselect.min.js" type = "text/javascript"></script>
 		<script src="/archive_search/js/reuters.js" type="text/javascript"></script>
 		<script src="/archive_search/js/mimic.js" type="text/javascript"></script>
 		
@@ -45,8 +46,9 @@
 							<input type="checkbox" id="chkKATFile" value="KAT7" checked> KAT7
 							<input type="checkbox" id="chkRTSFile" value="RTS" checked> RTS
 							<input type="checkbox" id="chkAR1File" value="AR1" checked> AR1
+							
 							<div style="line-height:150%;">
-							    <br>
+							    
 							</div>
 							<table>
 								<tr>
@@ -61,10 +63,10 @@
 									<td valign="top">
 									    <select name="orderBy" id="orderBy">
 									      	<option value = 0>Order By</option>
-									      	<option value = 1>Start Time : Descending</option>
-									      	<option value = 2>Start Time : Ascending</option>
-									      	<option value = 3>Observer : Descending</option>
-									      	<option value = 4>Observer : Ascending</option>
+									      	<option value = 1>Start Time : Newest to Oldest</option>
+									      	<option value = 2>Start Time : Oldest to Newest</option>
+									      	<option value = 3>Observer : A to Z</option>
+									      	<option value = 4>Observer : Z to A</option>
 									    </select>
 								    </td>
 							    </tr>
@@ -74,6 +76,15 @@
 								<br>
 								<div class='options'>
 									<table>
+										<tr>
+											<td colspan=2>
+												<input type="checkbox" id="chkReductionsOnly" value ="ReductionsOnly"> Reductions Only
+											</td>
+											<td colspan=4>
+												<select multiple title="Choose Reductions" name="reductionChoice" id="reductionChoice">
+									    		</select>
+											</td>
+										</tr>
 										<tr>
 											<td>
 												Start date:

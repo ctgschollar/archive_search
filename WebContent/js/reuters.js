@@ -43,18 +43,18 @@ var Manager;
     	state = JSON.parse(window.location.hash.substr(1).split('&'));
     	console.log (state);
     	setState(state);
-    	search(false);
+//    	search(false);
     	printState();
     }
-    else{   
+//    else{   
     //Create query
-    Manager.store.addByValue('q', '(CAS.ProductTypeName:KatFile OR CAS.ProductTypeName:RTSTelescopeProduct OR CAS.ProductTypeName:MeerKATAR1TelescopeProduct) AND CAS.ProductTransferStatus:"RECEIVED"');
-    
-    Manager.store.addByValue('sort', 'StartTime desc');
-    //execute query
-    Manager.doRequest();
+//    Manager.store.addByValue('q', '(CAS.ProductTypeName:KatFile OR CAS.ProductTypeName:RTSTelescopeProduct OR CAS.ProductTypeName:MeerKATAR1TelescopeProduct) AND CAS.ProductTransferStatus:"RECEIVED"');
+//    
+//    Manager.store.addByValue('sort', 'StartTime desc');
+//    //execute query
+//    Manager.doRequest();
     //result in Manager.response
-    }
+//    }
     });
   
 })(jQuery);
