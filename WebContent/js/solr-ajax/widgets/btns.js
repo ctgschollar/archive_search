@@ -511,9 +511,9 @@ function setState(state){
 	else
 		$( '#chkKATFile' ).prop( "checked",false);
 	if (state["a"])
-		$( '#chkAR1File' ).prop( "checked",state["AR1"]);
-	else
 		$( '#chkAR1File' ).prop( "checked",state["a"]);
+	else
+		$( '#chkAR1File' ).prop( "checked",false);
 	if (state["ro"])
 		$( '#chkReductionsOnly' ).prop( "checked",state["ro"]);
 	else

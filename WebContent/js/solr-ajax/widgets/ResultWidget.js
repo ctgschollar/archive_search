@@ -398,10 +398,12 @@ function productSearch (doc){
 		+ doc["FileLocation"][0].substring(9, doc["FileLocation"][0].length) + "/" + doc.Filename;
 	var filesize = parseFloat(doc.FileSize) / 1073741824;
 	var snippet = '';
-	var date = moment(doc['StartTime']);
+	var date = moment(doc['StartTime']); 
 	var obs_log_server = "obs.kat7.karoo.kat.ac.za";
 	if (doc["CAS.ProductTypeName"] == "RTSTelescopeProduct")
 		obs_log_server = "obs.mkat-rts.karoo.kat.ac.za"
+	else if (doc["CAS.ProductTypeName"] == "MeerKATAR1TelescopeProduct")
+		obs_log_server = "obs.mkat.karoo.kat.ac.za"
 	snippet += "<table><tr><td width = 200px><b>Observer</b> :</td><td>" + doc['Observer'] + "</td></tr>"
 	        + "<tr><td><b>Product Type</b> :</td><td>" + doc["CAS.ProductTypeName"] + "</td></tr>"
 			+ "<tr><td><b>Experiment ID</b> :</td><td> <a title='Click link to see experiement log' href='http://" + obs_log_server + ":8081/tailtask/" + doc['ExperimentID'] + "/progress'>" + doc['ExperimentID'] + "</a>"
