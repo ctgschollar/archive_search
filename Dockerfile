@@ -20,6 +20,5 @@ RUN wget --directory-prefix /tmp/install/ http://apache.is.co.za/tomcat/tomcat-7
     && chown -R kat. /opt/apache-tomcat-${VER}/
 
 USER kat
-# Install some stuff
-#COPY target/Archive_Browser-0.0.1-SNAPSHOT.war /opt/apache-tomcat-${VER}/webapps/archive_search.war
+COPY target/archive_search-0.1.war /opt/apache-tomcat-${VER}/webapps/archive_search.war
 WORKDIR /opt/apache-tomcat-${VER}/bin
