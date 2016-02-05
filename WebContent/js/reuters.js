@@ -7,8 +7,7 @@ var Manager;
 (function ($) {
   $(function () {
     Manager = new AjaxSolr.Manager({
-      //solrUrl: 'http://localhost:8080/solr/#/kat_core'
-      solrUrl: 'http://kat-archive-new.kat.ac.za:8983/solr/kat_core/'
+      solrUrl: document.host + '/solr/kat_core/'
     });
     
     

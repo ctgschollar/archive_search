@@ -97,9 +97,9 @@ function reductionSearch (doc){
 	
 	$
 	.post(
-			'http://kat-archive-new.kat.ac.za:8983/solr/kat_core/select?q=ProductId:'
+			document.location + ':8983/solr/kat_core/select?q=ProductId:'
 					+ doc['InputDataProductId'] + '&wt=json&json.wrf=?',
-//			'http://kat-archive-new.kat.ac.za:8983/solr/kat_core/select?q=InputDataProductId:'
+//			document.location + ':8983/solr/kat_core/select?q=InputDataProductId:'
 //			+ doc['CAS.ProductId']
 //			+ ' AND CAS.ProductTypeName:RTSReductionProduct&wt=json&json.wrf=?',
 			{},
@@ -110,7 +110,7 @@ function reductionSearch (doc){
 					observer = doc['Observer'];
 					description = doc['Description'];
 					
-					var link = "http://kat-archive-new.kat.ac.za/"
+					var link = document.location + '/"
 						+ doc["FileLocation"][0].substring(9, doc["FileLocation"][0].length) + "/" + doc.Filename;
 					var filesize = parseFloat(doc.FileSize) / 1073741824;
 					
@@ -127,7 +127,7 @@ function reductionSearch (doc){
 //	for (var i = 0; i < result["response"]["docs"].length; i++) {
 //		index = sorted[i][2];
 		console.log(doc["id"]);
-		link = "http://kat-archive-new.kat.ac.za:8983/fmprod/data?productID="
+		link = document.location + ':8983/fmprod/data?productID="
 				+ doc["id"]
 				+ "&format=application/x-zip";
 		var date = moment(doc['StartTime']);
@@ -147,7 +147,7 @@ function reductionSearch (doc){
 			url_deconstruct = files[j]
 					.split("/");
 			if (url_deconstruct[url_deconstruct.length -1] != ""){
-				link = "http://kat-archive-new.kat.ac.za/archive/data/"
+				link = document.location + '/archive/data/"
 						+ files[j]
 								.substring(
 										27,
@@ -237,7 +237,7 @@ function productSearch (doc){
 	// Grab reductions for results with following post
 	$
 			.post(
-					'http://kat-archive-new.kat.ac.za:8983/solr/kat_core/select?q=InputDataProductId:'
+					document.location + ':8983/solr/kat_core/select?q=InputDataProductId:'
 							+ doc['CAS.ProductId']
 							+ ' AND CAS.ProductTypeName:RTSReductionProduct&wt=json&json.wrf=?',
 					{},
@@ -281,7 +281,7 @@ function productSearch (doc){
 						for (var i = 0; i < result["response"]["docs"].length; i++) {
 							index = sorted[i][2];
 							console.log(result["response"]["docs"][index]["id"]);
-							link = "http://kat-archive-new.kat.ac.za:8983/fmprod/data?productID="
+							link = document.location + ':8983/fmprod/data?productID="
 									+ result["response"]["docs"][index]["id"]
 									+ "&format=application/x-zip";
 							var date = moment(result["response"]["docs"][index]['StartTime']);
@@ -299,7 +299,7 @@ function productSearch (doc){
 								url_deconstruct = files[j]
 										.split("/");
 								if (url_deconstruct[url_deconstruct.length -1] != ""){
-									link = "http://kat-archive-new.kat.ac.za/archive/data/"
+									link = document.location + '/archive/data/"
 											+ files[j]
 													.substring(
 															27,
@@ -394,7 +394,7 @@ function productSearch (doc){
 	
 	//Observations
 
-	var link = "http://kat-archive-new.kat.ac.za/"
+	var link = document.location + '/"
 		+ doc["FileLocation"][0].substring(9, doc["FileLocation"][0].length) + "/" + doc.Filename;
 	var filesize = parseFloat(doc.FileSize) / 1073741824;
 	var snippet = '';

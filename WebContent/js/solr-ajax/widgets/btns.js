@@ -14,7 +14,7 @@ $(function() {
 	
 	//Grab list of reductions	
 	$.post(
-			"http://kat-archive-new.kat.ac.za:8983/solr/kat_core/select?q=CAS.ProductTypeName:*ReductionProduct AND ReductionName:['' TO *]&rows=100&fl=ReductionName&wt=json&group=true&group.field=ReductionName&wt=json&json.wrf=?",
+			document.location + ':8983/solr/kat_core/select?q=CAS.ProductTypeName:*ReductionProduct AND ReductionName:['' TO *]&rows=100&fl=ReductionName&wt=json&group=true&group.field=ReductionName&wt=json&json.wrf=?"
 	{},
 	function(data, status) {
 //		console.log(data['grouped']);
@@ -215,7 +215,7 @@ var removeFileStr = '<?xml version="1.0"?>'+
 
 function deleteProduct (productId, dataStoreReference) {  
 //    	console.log (productId);
-    	$.ajax({url:"http://kat-archive-new.kat.ac.za:9100",
+    	$.ajax({url:document.location + ':9100",
     			type: "post",
     			data:getProductByIdStr.replace('REPLACE', productId),
     			dataType:"application/x-www-form-urlencoded",
@@ -230,7 +230,7 @@ function deleteProduct (productId, dataStoreReference) {
 			        	});
 //			        	console.log(product);
     			        
-    			        $.ajax({url:"http://kat-archive-new.kat.ac.za:9100",
+    			        $.ajax({url:document.location + ':9100",
     		    			type: "post",
     		    			data:removeFileStr.replace('REPLACE', dataStoreReference),
     		    			dataType:"application/x-www-form-urlencoded",
@@ -246,7 +246,7 @@ function deleteProduct (productId, dataStoreReference) {
 //    		    			        console.log(success);
     		    			        
     		    			        if (success == "1"){
-    		    			        	$.ajax({url:"http://kat-archive-new.kat.ac.za:9100",
+    		    			        	$.ajax({url:document.location + ':9100",
     		        		    			type: "post",
     		        		    			data:removeProductStr.replace('REPLACE', product),
     		        		    			dataType:"application/x-www-form-urlencoded",
@@ -535,7 +535,7 @@ function printState(){
 }
 
 //function clickHandler(e) {
-////  history.pushState({"search":$( '#inpSearch' ).val()}, null, "http://kat-archive-new.kat.ac.za:8983/Archive_Browser/");
+////  history.pushState({"search":$( '#inpSearch' ).val()}, null, document.location + ':8983/Archive_Browser/");
 //  history.pushState(data, event.target.textContent, event.target.href);
 //  console.log("Woo!");
 //
