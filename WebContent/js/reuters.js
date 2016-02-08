@@ -6,8 +6,9 @@
 var Manager;
 (function ($) {
   $(function () {
+    var archive_url = document.location.protocol+'//'+document.location.hostname;
     Manager = new AjaxSolr.Manager({
-      solrUrl: document.host + '/solr/kat_core/'
+      solrUrl: archive_url + ':8983/solr/kat_core/'
     });
     
     

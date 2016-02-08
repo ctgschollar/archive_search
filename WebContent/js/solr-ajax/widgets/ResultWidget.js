@@ -86,9 +86,10 @@
 
 function reductionSearch (doc){
 	
+        var archive_url = document.location.protocol+'//'+document.location.hostname;
 	var observer = "";
 	var description = "";
-	
+   	
 	var id = doc['ExperimentID'] + doc.ReductionName + doc['StartTime'];
 	console.log (id);
 	if(id)
@@ -97,7 +98,7 @@ function reductionSearch (doc){
 	
 	$
 	.post(
-			document.location + ':8983/solr/kat_core/select?q=ProductId:'
+			archive_url + ':8983/solr/kat_core/select?q=ProductId:'
 					+ doc['InputDataProductId'] + '&wt=json&json.wrf=?',
 //			document.location + ':8983/solr/kat_core/select?q=InputDataProductId:'
 //			+ doc['CAS.ProductId']
@@ -110,7 +111,7 @@ function reductionSearch (doc){
 					observer = doc['Observer'];
 					description = doc['Description'];
 					
-					var link = document.location + '/"
+					var link = archive_url  + "/"
 						+ doc["FileLocation"][0].substring(9, doc["FileLocation"][0].length) + "/" + doc.Filename;
 					var filesize = parseFloat(doc.FileSize) / 1073741824;
 					
@@ -127,7 +128,7 @@ function reductionSearch (doc){
 //	for (var i = 0; i < result["response"]["docs"].length; i++) {
 //		index = sorted[i][2];
 		console.log(doc["id"]);
-		link = document.location + ':8983/fmprod/data?productID="
+		link = archive_url + ":8983/fmprod/data?productID="
 				+ doc["id"]
 				+ "&format=application/x-zip";
 		var date = moment(doc['StartTime']);
@@ -147,7 +148,7 @@ function reductionSearch (doc){
 			url_deconstruct = files[j]
 					.split("/");
 			if (url_deconstruct[url_deconstruct.length -1] != ""){
-				link = document.location + '/archive/data/"
+				link = archive_url + "/archive/data/"
 						+ files[j]
 								.substring(
 										27,
@@ -232,12 +233,13 @@ function reductionSearch (doc){
 }
 
 function productSearch (doc){
+	var archive_url = document.location.protocol+'//'+document.location.hostname;
 	var result = "No Change";
 	var stat = "NOTHIN";
 	// Grab reductions for results with following post
 	$
 			.post(
-					document.location + ':8983/solr/kat_core/select?q=InputDataProductId:'
+					archive_url + ':8983/solr/kat_core/select?q=InputDataProductId:'
 							+ doc['CAS.ProductId']
 							+ ' AND CAS.ProductTypeName:RTSReductionProduct&wt=json&json.wrf=?',
 					{},
@@ -281,7 +283,7 @@ function productSearch (doc){
 						for (var i = 0; i < result["response"]["docs"].length; i++) {
 							index = sorted[i][2];
 							console.log(result["response"]["docs"][index]["id"]);
-							link = document.location + ':8983/fmprod/data?productID="
+							link = archive_url + ":8983/fmprod/data?productID="
 									+ result["response"]["docs"][index]["id"]
 									+ "&format=application/x-zip";
 							var date = moment(result["response"]["docs"][index]['StartTime']);
@@ -299,7 +301,7 @@ function productSearch (doc){
 								url_deconstruct = files[j]
 										.split("/");
 								if (url_deconstruct[url_deconstruct.length -1] != ""){
-									link = document.location + '/archive/data/"
+									link = archive_url + "/archive/data/"
 											+ files[j]
 													.substring(
 															27,
@@ -394,7 +396,7 @@ function productSearch (doc){
 	
 	//Observations
 
-	var link = document.location + '/"
+	var link = archive_url + "/"
 		+ doc["FileLocation"][0].substring(9, doc["FileLocation"][0].length) + "/" + doc.Filename;
 	var filesize = parseFloat(doc.FileSize) / 1073741824;
 	var snippet = '';

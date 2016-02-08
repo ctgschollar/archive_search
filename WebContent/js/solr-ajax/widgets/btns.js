@@ -8,13 +8,13 @@ $(function() {
 	
 	$( "#orderBy" ).selectmenu();
 	
-	
+        var archive_url = document.location.protocol+'//'+document.location.hostname;
 	
 	var reduction_num_regex = new RegExp("[0-9]{1,2}[._]?[0-9]{1,2}");
 	
 	//Grab list of reductions	
 	$.post(
-			document.location + ':8983/solr/kat_core/select?q=CAS.ProductTypeName:*ReductionProduct AND ReductionName:['' TO *]&rows=100&fl=ReductionName&wt=json&group=true&group.field=ReductionName&wt=json&json.wrf=?"
+			archive_url + ":8983/solr/kat_core/select?q=CAS.ProductTypeName:*ReductionProduct AND ReductionName:['' TO *]&rows=100&fl=ReductionName&wt=json&group=true&group.field=ReductionName&wt=json&json.wrf=?",
 	{},
 	function(data, status) {
 //		console.log(data['grouped']);
@@ -214,8 +214,9 @@ var removeFileStr = '<?xml version="1.0"?>'+
 
 
 function deleteProduct (productId, dataStoreReference) {  
+        var archive_url = document.location.protocol+'//'+document.location.hostname;
 //    	console.log (productId);
-    	$.ajax({url:document.location + ':9100",
+    	$.ajax({url:archive_url + ":9100",
     			type: "post",
     			data:getProductByIdStr.replace('REPLACE', productId),
     			dataType:"application/x-www-form-urlencoded",
@@ -230,7 +231,7 @@ function deleteProduct (productId, dataStoreReference) {
 			        	});
 //			        	console.log(product);
     			        
-    			        $.ajax({url:document.location + ':9100",
+    			        $.ajax({url:archive_url + ":9100",
     		    			type: "post",
     		    			data:removeFileStr.replace('REPLACE', dataStoreReference),
     		    			dataType:"application/x-www-form-urlencoded",
@@ -246,7 +247,7 @@ function deleteProduct (productId, dataStoreReference) {
 //    		    			        console.log(success);
     		    			        
     		    			        if (success == "1"){
-    		    			        	$.ajax({url:document.location + ':9100",
+    		    			        	$.ajax({url:archive_url + ":9100",
     		        		    			type: "post",
     		        		    			data:removeProductStr.replace('REPLACE', product),
     		        		    			dataType:"application/x-www-form-urlencoded",
