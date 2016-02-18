@@ -142,7 +142,7 @@ function setDelete(){
 			width:400,
 			buttons:{
 				"Delete":function() {
-					values = $( this ).attr("value").split(":");
+					values = $( this ).attr("value").split("&");
 //					console.log(values);
 					deleteProduct(values[0], values[1]);
 					$( this ).dialog( "close" );
