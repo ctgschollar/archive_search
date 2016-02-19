@@ -128,7 +128,7 @@ function reductionSearch (doc){
 //	for (var i = 0; i < result["response"]["docs"].length; i++) {
 //		index = sorted[i][2];
 		console.log(doc["id"]);
-		link = archive_url + ":8983/fmprod/data?productID="
+		link = archive_url + ":8080/fmprod/data?productID="
 				+ doc["id"]
 				+ "&format=application/x-zip";
 		var date = moment(doc['StartTime']);
@@ -283,7 +283,7 @@ function productSearch (doc){
 						for (var i = 0; i < result["response"]["docs"].length; i++) {
 							index = sorted[i][2];
 							console.log(result["response"]["docs"][index]["id"]);
-							link = archive_url + ":8983/fmprod/data?productID="
+							link = archive_url + ":8080/fmprod/data?productID="
 									+ result["response"]["docs"][index]["id"]
 									+ "&format=application/x-zip";
 							var date = moment(result["response"]["docs"][index]['StartTime']);
